@@ -1,0 +1,21 @@
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  gh-pages-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: npm install and build webpack
+        uses: actions/setup-node@v2
+      - run: npm config set registry https://registry.npmjs.org/
+      - run: npm install
+      - run: npm run build
+      - run: git config --global user.email "weijingjaylin@gmail.com"
+      - run: git config --global user.name "Weijing Lin"
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
